@@ -1,0 +1,163 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+  }
+
+  body {
+    font-family: 'Raleway Variable', sans-serif;
+}
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* GRID BACKGROUNDS */
+.green-grid {
+    background-color: #CBD400;
+}
+
+.red-grid {
+    background-color: #DF2A34;
+}
+
+.black-grid {
+    background-color: #1B1A1F;
+}
+
+.orange-grid {
+    background-color: #F75D48;
+}
+
+.violet-grid {
+    background-color: #7D1EFF;
+}
+
+.grey-grid {
+    background-color: #BCBDB8;
+}
+
+.yellow-grid {
+    background-color: #F7D848;
+}
+
+.red-product {
+    background-color: #E0263E;
+}
+
+.orange-product {
+    background-color: #FF6048;
+}
+
+.orange-signal {
+    background-color: #FF6500;
+}
+
+/* FONT-GOOGLE */
+.pt-sans-regular {
+    font-family: "PT Sans Caption", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.pt-sans-bold {
+    font-family: "PT Sans Caption", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+
+/* SVG SIDEBAR */
+.svg-icon {
+  display: none; /* Oculta el SVG por defecto */
+}
+
+.contenedor:hover .svg-icon {
+  display: inline-block; /* Muestra el SVG cuando se hace hover sobre el contenedor */
+}
+
+.rotate-down {
+  transform: rotate(0deg);
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.rotate-up {
+  transform: rotate(400grad);
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.bg-base-light {
+  background: #F3F3F5
+}
+
+.bg-base {
+  background: #222222
+}
+
