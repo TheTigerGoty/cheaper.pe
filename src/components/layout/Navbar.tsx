@@ -2,7 +2,7 @@ import Link from "next/link";
 import Logo from "../shared/Logo";
 import { ModeToggle } from "../shared/ModeToggle";
 import { Menu } from "./navbar/Menu";
-import Searcher from "../shared/Searcher";
+import { ModalSearch } from "./navbar/ModalSearch";
 
 export default function Navbar() {
     return (
@@ -16,7 +16,7 @@ export default function Navbar() {
             </div>
 
             <div>
-                {/* <Searcher/> */}
+                <ModalSearch />
             </div>
 
             <div>
