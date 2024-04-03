@@ -26,7 +26,7 @@ const category: Category[] = [
             },
             {
                 "name": "Audio",
-                "types": [],
+                "types": ["Audifonos", "Parlantes", "Equipo de Sonido", "Microfono", "Autoradios", "Bluray y DVD", "Barras de Sonido y Home Theater"],
                 "brands": []
             },
             {

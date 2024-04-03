@@ -24,17 +24,17 @@ export const ProductCard: React.FC<Props> = ({ product, size = "lg" }) => {
   };
 
   return (
-    <Card className={`cn("w-[380px]") ${sizes[size]} border border-grey`}>
+    <Card className={`cn("w-[380px]") ${sizes[size]} border rounded-2xl`}>
       <CardHeader>
-        <Image src={product.image} alt={"ayuda"} width={340} height={340} />
+        <Image src={product.image} alt={"ayuda"} width={340} height={340} className="rounded-xl" />
       </CardHeader>
       <CardContent className="grid gap-4">
-        <div className=" flex space-x-4 rounded-md border p-4">
+        <div className="flex space-x-4 p-4">
           <div className="flex-1 space-y-1 flex flex-col items-center">
-            <p className="text-sm font-medium leading-none">
+            <p className="text-md font-medium leading-none">
               {product.brand}
             </p>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-2xl text-muted-foreground">
               {product.title}
             </p>
           </div>

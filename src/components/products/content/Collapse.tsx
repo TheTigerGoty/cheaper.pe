@@ -1,6 +1,5 @@
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Slider } from '@/components/ui/slider';
 import {
   Collapsible,
   CollapsibleContent,
@@ -10,6 +9,10 @@ import {
 import React, { useState, type ChangeEvent, useEffect } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import { Slider } from '@/components/ui/slider';
+import category from '@/data/category';
+
+type Section = 'subCategorias' | 'tipos' | 'marcas';
 
 interface SubCategorias {
   [key: string]: string[];
@@ -32,42 +35,34 @@ interface CollapseProps {
 }
 
 export const Collapse: React.FC<CollapseProps> = ({ onCategorySelect, onSubCategorySelect, onSliderSelect, onTypeSelect, onBrandSelect }) => {
-  const categorias: string[] = [
-    'Tecnología',
-    'Deporte y Aire Libre',
-    'Belleza y Salud',
-    'ElectroHogar',
-    'Moda',
-    'Hogar',
-    'Musica e Instrumentos'
-  ];
 
-  const subCategorias: SubCategorias = {
-    Tecnología: ['Televisores', 'Computo', 'Telefonia', 'Consolas', 'Audio', 'Set Gamer', 'Camaras y Drones', 'Smartphone'],
-    'Deporte y Aire Libre': ['Bicicletas', 'Electromovilidad'],
-    'Belleza y Salud': ['Dermocosmetica', 'Electro Belleza', 'Perfumes', 'Vitaminas y Suplementos', 'Pañales'],
-    ElectroHogar: ['Climatizacion', 'Cocina', 'Refrigeracion', 'Electrodomesticos', 'Lavado y Secado', 'Aspirado y Limpieza'],
-    Moda: ['Calzado'],
-    Hogar: ['Dormitorio', 'Herramientas Electricas', 'Maquinaria y Complementos', 'Termas y Calentadores'],
-    'Musica e Instrumentos': ['Instrumentos', 'Accesorios instrumentos']
-  };
+  const categorias: string[] = category.map(c => c.category)
 
-  const tipos: tiposEspecificos = {
-    Televisores: ['LED', 'QLED', 'OLED', 'NanoCell', 'QNED'],
-    Computo: ['Laptops', 'Tablet', 'Impresoras'],
-    Telefonia: ['Smartphone', 'Smartwatches', 'Smartbands'],
-    // Agregar marcas específicas para otras subcategorías aquí
-  };
+  const subCategorias: SubCategorias = {};
+  category.forEach(cat => {
+    subCategorias[cat.category] = cat.subcategories.map(sub => sub.name);
+  });
 
-  const marcasEspecificas: MarcasEspecificas = {
-    Televisores: ['Samsung', 'Sony', 'LG'],
-    Computo: ['Apple', 'Dell', 'HP'],
-    Telefonia: ['Samsung', 'Apple', 'Xiaomi'],
-    // Agregar marcas específicas para otras subcategorías aquí
-  };
+  const tipos: tiposEspecificos = {};
+  category.forEach(cat => {
+    cat.subcategories.forEach(sub => {
+      tipos[sub.name] = sub.types;
+    });
+  });
+
+  const marcasEspecificas: MarcasEspecificas = {};
+  category.forEach(cat => {
+    cat.subcategories.forEach(sub => {
+      marcasEspecificas[sub.name] = sub.brands;
+    });
+  });
 
   // Estados para almacenar las selecciones del usuario
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState({
+    subCategorias: true,
+    tipos: true,
+    marcas: true
+  });
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(null);
   const [selectedType, setSelectedType] = useState<string | null>(null);
@@ -80,8 +75,11 @@ export const Collapse: React.FC<CollapseProps> = ({ onCategorySelect, onSubCateg
     setSelectedSubCategoriesByCategory({});
   }, [selectedCategory]);
 
-  const toggleCollapse = () => {
-    setIsCollapsed(!isCollapsed);
+  const toggleCollapse = (section: Section) => {
+    setIsCollapsed(prevState => ({
+      ...prevState,
+      [section]: !prevState[section]
+    }));
   };
 
   // Función para manejar la selección de categoría
@@ -149,21 +147,34 @@ export const Collapse: React.FC<CollapseProps> = ({ onCategorySelect, onSubCateg
 
       {/* La sección de precios no depende de ninguna selección en especifico, es independiente*/}
       <div className="border p-5 xl:w-96 mt-5">
-        <div className="pt-sans-bold text-2xl collapse-title">Precios</div>
+        <span className="pt-sans-bold text-2xl collapse-title ">Precios</span>
         <div>
 
           {/* <Slider>
             <input onChange={handleSliderChange}/>
           </Slider> */}
 
-          <Slider
+          {/* <Slider
             min={0}
             max={100}
             step={25}
             onVolumeChange={handleSliderChange} // Maneja el cambio del slider
-          />
+          /> */}
 
-          <div className="w-full flex justify-between text-xs px-2">
+          <div className='mt-4'>
+
+            <Slider
+              defaultValue={[sliderValue]}
+              min={1}
+              max={6}
+              step={1}
+              onChange={handleSliderChange} />
+
+
+          </div>
+
+
+          <div className=" flex justify-between text-xs mt-4">
             <span>200</span>
             <span>500</span>
             <span>1000</span>
@@ -176,10 +187,10 @@ export const Collapse: React.FC<CollapseProps> = ({ onCategorySelect, onSubCateg
       {selectedCategory && (
         <div className="border p-5 xl:w-96 mt-5">
           <Collapsible className='flex flex-col'>
-            <CollapsibleTrigger className="pt-sans-bold text-2xl flex items-center justify-between" onClick={toggleCollapse}>
+            <CollapsibleTrigger className="pt-sans-bold text-2xl flex items-center justify-between" onClick={() => toggleCollapse('subCategorias')}>
               <span>SubCategorias</span>
-              <div className={isCollapsed ? "rotate-down" : "rotate-up"}>
-                {isCollapsed ? <ChevronDown /> : <ChevronUp />}
+              <div className={isCollapsed.subCategorias ? "rotate-down" : "rotate-up"}>
+                {isCollapsed.subCategorias ? <ChevronDown /> : <ChevronUp />}
               </div>
             </CollapsibleTrigger>
             <CollapsibleContent className=" pt-sans-regular space-y-5 mt-5 ml-5 mr-1">
@@ -202,10 +213,10 @@ export const Collapse: React.FC<CollapseProps> = ({ onCategorySelect, onSubCateg
       {selectedCategory && selectedSubCategoriesByCategory[selectedCategory || '']?.length > 0 && ( // Condicional doble de si una Categoria y SubCategoria a sido seleccionada, ambas deben ser verdaderas para el renderizado
         <div className="border p-5 xl:w-96 mt-5">
           <Collapsible className='flex flex-col'>
-            <CollapsibleTrigger className="pt-sans-bold text-2xl flex items-center justify-between" onClick={toggleCollapse}>
+            <CollapsibleTrigger className="pt-sans-bold text-2xl flex items-center justify-between" onClick={() => toggleCollapse('tipos')}>
               <span>Tipos</span>
-              <div className={isCollapsed ? "rotate-down" : "rotate-up"}>
-                {isCollapsed ? <ChevronDown /> : <ChevronUp />}
+              <div className={isCollapsed.tipos ? "rotate-down" : "rotate-up"}>
+                {isCollapsed.tipos ? <ChevronDown /> : <ChevronUp />}
               </div>
             </CollapsibleTrigger>
             <CollapsibleContent className=" pt-sans-regular space-y-5 mt-5 ml-5 mr-1">
@@ -224,10 +235,10 @@ export const Collapse: React.FC<CollapseProps> = ({ onCategorySelect, onSubCateg
       {selectedCategory && selectedSubCategoriesByCategory[selectedCategory || '']?.length > 0 && (
         <div className="border p-5 xl:w-96 mt-5">
           <Collapsible className='flex flex-col'>
-            <CollapsibleTrigger className="pt-sans-bold text-2xl flex items-center justify-between" onClick={toggleCollapse}>
+            <CollapsibleTrigger className="pt-sans-bold text-2xl flex items-center justify-between" onClick={() => toggleCollapse('marcas')}>
               <span>Marcas</span>
-              <div className={isCollapsed ? "rotate-down" : "rotate-up"}>
-                {isCollapsed ? <ChevronDown /> : <ChevronUp />}
+              <div className={isCollapsed.marcas ? "rotate-down" : "rotate-up"}>
+                {isCollapsed.marcas ? <ChevronDown /> : <ChevronUp />}
               </div>
             </CollapsibleTrigger>
             <CollapsibleContent className=" pt-sans-regular space-y-5 mt-5 ml-5 mr-1">
