@@ -39,6 +39,7 @@ const products: Products = [
       },
     ],
   },
+
   {
     title: "Laptop Gamer",
     description: "descripcion1",
@@ -77,6 +78,7 @@ const products: Products = [
       },
     ],
   },
+  
   {
     title: "Bicicleta Pro",
     description: "descripcion1",

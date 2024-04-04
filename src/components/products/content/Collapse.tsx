@@ -1,4 +1,3 @@
-
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import {
@@ -7,18 +6,15 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
 
-import React, { useState, type ChangeEvent, useEffect } from 'react';
+import React, { useState, type ChangeEvent, useEffect, useCallback } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import category from '@/data/category';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 
 type Section = 'subCategorias' | 'tipos' | 'marcas';
 
 interface SubCategorias {
-  [key: string]: string[];
-}
-
-interface SelectedSubCategories {
   [key: string]: string[];
 }
 
@@ -39,6 +35,20 @@ interface CollapseProps {
 }
 
 export const Collapse: React.FC<CollapseProps> = ({ onCategorySelect, onSubCategorySelect, onSliderSelect, onTypeSelect, onBrandSelect }) => {
+
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString())
+      params.set(name, value)
+
+      return params.toString()
+    },
+    [searchParams]
+  )
 
   const categorias: string[] = category.map(c => c.category)
 
@@ -89,6 +99,8 @@ export const Collapse: React.FC<CollapseProps> = ({ onCategorySelect, onSubCateg
     setSelectedCategory(categoria);
     setSelectedSubCategory(null);
     onCategorySelect(categoria);
+    const newQueryString = createQueryString('category', categoria);
+    router.push(`${pathname}?${newQueryString}`);
   };
 
   const handleSliderChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -105,17 +117,24 @@ export const Collapse: React.FC<CollapseProps> = ({ onCategorySelect, onSubCateg
     setSelectedSubCategoriesByCategory(updatedSelectedSubCategoriesByCategory);
     setSelectedSubCategory(subCategoria);
     onSubCategorySelect(subCategoria);
+    
+    const newQueryString = createQueryString('subcategory', subCategoria);
+    router.push(`${pathname}?${newQueryString}`);
   };
 
   const handleTypeSelect = (tipo: string) => {
     setSelectedType(tipo);
     onTypeSelect(tipo);
+    const newQueryString = createQueryString('type', tipo);
+    router.push(`${pathname}?${newQueryString}`);
   };
 
 
   const handleBrandSelect = (marca: string) => {
     setSelectedBrand(marca);
     onBrandSelect(marca);
+    const newQueryString = createQueryString('brand', marca);
+    router.push(`${pathname}?${newQueryString}`);
   };
 
   return (
@@ -142,7 +161,7 @@ export const Collapse: React.FC<CollapseProps> = ({ onCategorySelect, onSubCateg
         <div className="relative mb-6">
           <label htmlFor="labels-range-input" className="sr-only">Labels range</label>
           <input id="labels-range-input" type="range" defaultValue={sliderValue} min="0" max="300" step="100" onChange={handleSliderChange} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700" />
-          <span className="text-sm text-gray-500 dark:text-gray-400 absolute start-0 -bottom-6">0</span>
+          <span className="text-sm text-gray-500 dark:text-gray-400 absolute start-0 -bottom-6">Todos</span>
           <span className="text-sm text-gray-500 dark:text-gray-400 absolute start-1/3 ml-1 -translate-x-1/2 rtl:translate-x-1/2 -bottom-6">100</span>
           <span className="text-sm text-gray-500 dark:text-gray-400 absolute start-2/3 -translate-x-1/2 rtl:translate-x-1/2 -bottom-6">1000</span>
           <span className="text-sm text-gray-500 dark:text-gray-400 absolute end-0 -bottom-6">10000</span>

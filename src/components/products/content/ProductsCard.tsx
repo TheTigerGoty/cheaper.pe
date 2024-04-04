@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import type { Product } from '@/types/api-ripley';
 import { SkeletonProduct } from './SkeletonProduct';
 import { ProductCard } from '../ProductCard';

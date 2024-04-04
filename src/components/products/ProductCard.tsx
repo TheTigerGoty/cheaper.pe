@@ -9,6 +9,8 @@ import {
 import Image from "next/image"
 import { ShoppingCart, TrendingDown } from 'lucide-react'
 import type { Product } from "@/types/api-ripley";
+import Link from 'next/link';
+
 
 interface Props {
   product: Product;
@@ -60,9 +62,13 @@ export const ProductCard: React.FC<Props> = ({ product, size = "lg" }) => {
         </div>
       </CardContent>
       <CardFooter>
-        <Button className="w-full">
-          Comprar
-        </Button>
+
+        <Link href={`/product/${product.title}`} className="w-full">
+          <Button className="w-full">
+            Comprar
+          </Button>
+        </Link>
+
       </CardFooter>
     </Card>
   )
