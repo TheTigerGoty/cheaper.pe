@@ -8,9 +8,10 @@ import ProductsCard from './content/ProductsCard';
 interface Props {
     currentPage: number;
     handlePageChange: (pageNumber: number) => void;
+    handleCategoryChange: (category: string) => void; // Agrega la prop handleCategoryChange
 }
 
-export const ProductsGeneral: React.FC<Props> = ({ currentPage, handlePageChange }) => {
+export const ProductsGeneral: React.FC<Props> = ({ currentPage, handlePageChange, handleCategoryChange }) => {
 
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     const [selectedSubCategory, setSelectedSubCategory] = useState<string[]>([]);
@@ -23,8 +24,9 @@ export const ProductsGeneral: React.FC<Props> = ({ currentPage, handlePageChange
         setSelectedSubCategory([]);
         setSelectedType([]);
         setSelectedBrand([]);
+        handleCategoryChange(categoria); // Llama a handleCategoryChange cuando se selecciona una categoría
 
-        window.history.pushState(null, '', `/products?page=1&category=${categoria}`);
+        
     };
 
     const handleSubCategorySelect = (subCategoria: string) => {
