@@ -95,7 +95,7 @@ export const Collapse: React.FC<CollapseProps> = ({ onCategorySelect, onSubCateg
     }));
   };
 
-  const handleCategorySelect = (categoria: string) => {
+  const handleCategorySelect = (categoria: string) => {    
     setSelectedCategory(categoria);
     setSelectedSubCategory(null);
     onCategorySelect(categoria);

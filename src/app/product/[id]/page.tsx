@@ -2,6 +2,7 @@ import Image from "next/image";
 import PlayStation from '@/assets/img/playstation-foto.png'
 import type { Product, Store } from "@/types/api-ripley";
 import ProductsData from '@/data/products';
+import { Button } from "@/components/ui/button";
 
 interface Props {
   product: Product;
@@ -16,39 +17,30 @@ export default function Product({ params }: Props) {
 
   return (
     <div>
-      <div className="xl:flex container mx-auto my-10">
+      <div className="xl:flex mx-auto my-10">
         <div
-          className="xl:w-1/2 flex flex-col items-center mr-20 xl:ml-0 container p-2 xl:p-0"
+          className="xl:w-1/2 flex flex-col items-center justify-center mr-20 xl:ml-0 p-2 xl:p-0"
         >
-          {/* <!--Todo: COLUMNA 1--> */}
-          <div className="border rounded-xl">
-            <Image src={PlayStation} width={600} alt={"Fallabella"} />
-          </div>
-
-          <div className="flex xl:mt-20 md:mt-10 mt-5 md:space-x-10 space-x-3">
-            <div>
-              <Image
-                src={PlayStation}
-                width={500}
-                className={"border rounded-xl"}
-                alt={"Fallabella"}
-              />
+          <div className="grid gap-4">
+            <div className="mb-10">
+              <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/featured/image.jpg" alt="" width={100} height={1000} />
+            </div>
+            <div className="grid grid-cols-3 gap-3">
+              <div>
+                <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg" alt="" width={300} height={100} />
+              </div>
+              <div>
+                <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg" alt="" width={300} height={100} />
+              </div>
+              <div>
+                <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-3.jpg" alt="" width={300} height={100} />
+              </div>
+              <div>
+                {/* <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-4.jpg" alt="" width={100} height={100} />
             </div>
             <div>
-              <Image
-                src={PlayStation}
-                width={500}
-                className={"border rounded-xl"}
-                alt={"Fallabella"}
-              />
-            </div>
-            <div>
-              <Image
-                src={PlayStation}
-                width={500}
-                className={"border rounded-xl"}
-                alt={"Fallabella"}
-              />
+              <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-5.jpg" alt="" width={100} height={100} /> */}
+              </div>
             </div>
           </div>
         </div>
@@ -65,16 +57,16 @@ export default function Product({ params }: Props) {
                 S/ {product?.price}
               </h2>
 
-              <h3
+              <Button
                 className="md:text-xl md:ml-10 ml-4 red-product text-white md:py-3 md:px-7 py-2 px-4 rounded-full"
               >
                 65% Off (Vs. Precio Promedio)
-              </h3>
+              </Button>
             </div>
 
             <h3 className="pt-sans-bold text-xl md:ml-0 ml-3">
               Marca: <span className="pt-sans-regular text-base">
-              {product?.brand}
+                {product?.brand}
               </span>
             </h3>
 
@@ -121,33 +113,33 @@ export default function Product({ params }: Props) {
 
                 <div className="col-span-4 space-y-8 text-grey border-t-2 pt-2">
                   {
-                  product?.stores.map((store: Store) => (
-                    <>
-                      <div className="grid grid-cols-4 items-center">
-                        <div>
-                          <figure>
-                            <img src={store.image} width="130" alt="" />
-                          </figure>
-                        </div>
-                        <div className="xl:ml-8 md:ml-7 ml-3 md:text-lg text-sm">
-                          <p>{product.title}</p>
-                        </div>
-                        <div className="md:ml-12 ml-5">
-                          <p>{store.price}</p>
-                        </div>
-                        <div>
-                          <div className="flex flex-col md:ml-4 items-center">
-                            <p>S/ 219</p>
-                            <div className="text-white text-sm orange-signal w-24 p-1 text-center">
-                              <p>Mejor Precio</p>
+                    product?.stores.map((store: Store) => (
+                      <>
+                        <div className="grid grid-cols-4 items-center">
+                          <div>
+                            <figure>
+                              <img src={store.image} width="130" alt="" />
+                            </figure>
+                          </div>
+                          <div className="xl:ml-8 md:ml-7 ml-3 md:text-lg text-sm">
+                            <p>{product.title}</p>
+                          </div>
+                          <div className="md:ml-12 ml-5">
+                            <p>{store.price}</p>
+                          </div>
+                          <div>
+                            <div className="flex flex-col md:ml-4 items-center">
+                              <p>S/ 219</p>
+                              <div className="text-white text-sm orange-signal w-24 p-1 text-center">
+                                <p>Mejor Precio</p>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div />
-                    </>
-                  ))
-                }
+                        <div />
+                      </>
+                    ))
+                  }
                 </div>
               </div>
             </div>

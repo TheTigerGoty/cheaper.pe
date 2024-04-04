@@ -11,12 +11,14 @@ interface ProductsCardProps {
     selectedSlider: any;
     selectedType: string[];
     selectedBrand: string[];
+    currentPage: number;
+    handlePageChange: (pageNumber: number) => void;
 }
 
-export const ProductsCard: React.FC<ProductsCardProps> = ({ selectedCategory, selectedSubCategory, selectedSlider, selectedType, selectedBrand }) => {
+export const ProductsCard: React.FC<ProductsCardProps> = ({ selectedCategory, selectedSubCategory, selectedSlider, selectedType, selectedBrand, currentPage, handlePageChange }) => {
 
     const [loading, setLoading] = useState<boolean>(true);
-    const [currentPage, setCurrentPage] = useState<number>(1);
+    // const [currentPage, setCurrentPage] = useState<number>(1);
     const productsPerPage = 3;
     const indexOfLastProduct = currentPage * productsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
@@ -40,19 +42,19 @@ export const ProductsCard: React.FC<ProductsCardProps> = ({ selectedCategory, se
     const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
     const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
-    const handlePageChange = (pageNumber: number) => {
-        setCurrentPage(pageNumber);
-    };
+    // const handlePageChange = (pageNumber: number) => {
+    //     setCurrentPage(pageNumber);
+    // };
 
     const handleNextPage = () => {
         if (currentPage < totalPages) {
-            setCurrentPage(currentPage + 1);
+            handlePageChange(currentPage + 1);
         }
     };
 
     const handlePreviousPage = () => {
         if (currentPage > 1) {
-            setCurrentPage(currentPage - 1);
+            handlePageChange(currentPage - 1);
         }
     };
 

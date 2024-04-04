@@ -17,6 +17,8 @@ interface PaginationProps {
 }
 
 export const PaginationProducts: React.FC<PaginationProps> = ({ totalPages, currentPage, handlePageChange, handleNextPage, handlePreviousPage }) => {
+
+    
     const renderPaginationItems = () => {
         const paginationItems = [];
 

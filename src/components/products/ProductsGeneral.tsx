@@ -5,7 +5,12 @@ import { Collapse } from './content/Collapse';
 import { FilterButton } from './content/FilterButton';
 import ProductsCard from './content/ProductsCard';
 
-export const ProductsGeneral = () => {
+interface Props {
+    currentPage: number;
+    handlePageChange: (pageNumber: number) => void;
+  }
+
+  export const ProductsGeneral: React.FC<Props> = ({ currentPage, handlePageChange }) => {
 
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     const [selectedSubCategory, setSelectedSubCategory] = useState<string[]>([]);
@@ -78,6 +83,8 @@ export const ProductsGeneral = () => {
                 selectedSlider={selectedSlider}
                 selectedType={selectedType}
                 selectedBrand={selectedBrand}
+                currentPage={currentPage} 
+                handlePageChange={handlePageChange}
             />
         </section>
     )
