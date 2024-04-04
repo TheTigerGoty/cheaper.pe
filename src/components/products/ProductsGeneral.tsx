@@ -8,9 +8,9 @@ import ProductsCard from './content/ProductsCard';
 interface Props {
     currentPage: number;
     handlePageChange: (pageNumber: number) => void;
-  }
+}
 
-  export const ProductsGeneral: React.FC<Props> = ({ currentPage, handlePageChange }) => {
+export const ProductsGeneral: React.FC<Props> = ({ currentPage, handlePageChange }) => {
 
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     const [selectedSubCategory, setSelectedSubCategory] = useState<string[]>([]);
@@ -18,12 +18,13 @@ interface Props {
     const [selectedType, setSelectedType] = useState<string[]>([])
     const [selectedBrand, setSelectedBrand] = useState<string[]>([])
 
-    
     const handleCategorySelect = (categoria: string) => {
         setSelectedCategory(categoria);
-        setSelectedSubCategory([]); 
-        setSelectedType([]); 
-        setSelectedBrand([]); 
+        setSelectedSubCategory([]);
+        setSelectedType([]);
+        setSelectedBrand([]);
+
+        window.history.pushState(null, '', `/products?page=1&category=${categoria}`);
     };
 
     const handleSubCategorySelect = (subCategoria: string) => {
@@ -83,7 +84,7 @@ interface Props {
                 selectedSlider={selectedSlider}
                 selectedType={selectedType}
                 selectedBrand={selectedBrand}
-                currentPage={currentPage} 
+                currentPage={currentPage}
                 handlePageChange={handlePageChange}
             />
         </section>

@@ -10,7 +10,6 @@ import React, { useState, type ChangeEvent, useEffect, useCallback } from 'react
 import { Checkbox } from '@/components/ui/checkbox';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import category from '@/data/category';
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 
 type Section = 'subCategorias' | 'tipos' | 'marcas';
 
@@ -35,21 +34,6 @@ interface CollapseProps {
 }
 
 export const Collapse: React.FC<CollapseProps> = ({ onCategorySelect, onSubCategorySelect, onSliderSelect, onTypeSelect, onBrandSelect }) => {
-
-  const router = useRouter()
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
-
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString())
-      params.set(name, value)
-
-      return params.toString()
-    },
-    [searchParams]
-  )
-
   const categorias: string[] = category.map(c => c.category)
 
   const subCategorias: SubCategorias = {};
@@ -99,8 +83,6 @@ export const Collapse: React.FC<CollapseProps> = ({ onCategorySelect, onSubCateg
     setSelectedCategory(categoria);
     setSelectedSubCategory(null);
     onCategorySelect(categoria);
-    const newQueryString = createQueryString('category', categoria);
-    router.push(`${pathname}?${newQueryString}`);
   };
 
   const handleSliderChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -117,24 +99,17 @@ export const Collapse: React.FC<CollapseProps> = ({ onCategorySelect, onSubCateg
     setSelectedSubCategoriesByCategory(updatedSelectedSubCategoriesByCategory);
     setSelectedSubCategory(subCategoria);
     onSubCategorySelect(subCategoria);
-    
-    const newQueryString = createQueryString('subcategory', subCategoria);
-    router.push(`${pathname}?${newQueryString}`);
   };
 
   const handleTypeSelect = (tipo: string) => {
     setSelectedType(tipo);
     onTypeSelect(tipo);
-    const newQueryString = createQueryString('type', tipo);
-    router.push(`${pathname}?${newQueryString}`);
   };
 
 
   const handleBrandSelect = (marca: string) => {
     setSelectedBrand(marca);
     onBrandSelect(marca);
-    const newQueryString = createQueryString('brand', marca);
-    router.push(`${pathname}?${newQueryString}`);
   };
 
   return (
