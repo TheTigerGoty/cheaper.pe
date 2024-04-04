@@ -2,6 +2,7 @@ import Searcher from "@/components/shared/Searcher"
 import { Button } from "@/components/ui/button"
 import {
     Dialog,
+    DialogClose,
     DialogContent,
     DialogDescription,
     DialogFooter,
@@ -31,7 +32,11 @@ export function ModalSearch() {
                     <Searcher />
                 </div>
                 <DialogFooter>
-                    <Button type="submit">Cerrar</Button>
+                    <DialogClose asChild>
+                        <Button type="button">
+                            Cerrar
+                        </Button>
+                    </DialogClose>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

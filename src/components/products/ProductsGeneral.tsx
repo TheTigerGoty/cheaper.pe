@@ -8,22 +8,27 @@ import ProductsCard from './content/ProductsCard';
 export const ProductsGeneral = () => {
 
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-    const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(null);
+    const [selectedSubCategory, setSelectedSubCategory] = useState<string[]>([]);
     const [selectedSlider, setSelectedSlider] = useState<string | null>(null);
-    const [selectedType, setSelectedType] = useState<string | null>(null);
-    const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
+    const [selectedType, setSelectedType] = useState<string[]>([])
+    const [selectedBrand, setSelectedBrand] = useState<string[]>([])
 
+    
     const handleCategorySelect = (categoria: string) => {
         setSelectedCategory(categoria);
+        setSelectedSubCategory([]); 
+        setSelectedType([]); 
+        setSelectedBrand([]); 
     };
 
     const handleSubCategorySelect = (subCategoria: string) => {
-        if (selectedSubCategory === subCategoria) {
-            // Si la subcategoría actual es la que se está deseleccionando
-            setSelectedSubCategory(null); // Desmarcarla
-        } else {
-            setSelectedSubCategory(subCategoria); // De lo contrario, marcarla
-        }
+        setSelectedSubCategory(prevSubCategories => {
+            if (prevSubCategories.includes(subCategoria)) {
+                return prevSubCategories.filter(item => item !== subCategoria);
+            } else {
+                return [...prevSubCategories, subCategoria];
+            }
+        });
     };
 
     const handleSliderSelect = (event: any) => {
@@ -31,19 +36,23 @@ export const ProductsGeneral = () => {
     }
 
     const handleTypeSelect = (tipo: string) => {
-        if (selectedType === tipo) {
-            setSelectedType(null);
-        } else {
-            setSelectedType(tipo);
-        }
+        setSelectedType(prevTypes => {
+            if (prevTypes.includes(tipo)) {
+                return prevTypes.filter(item => item !== tipo);
+            } else {
+                return [...prevTypes, tipo];
+            }
+        });
     };
 
     const handleBrandSelect = (marca: string) => {
-        if (selectedBrand === marca) {
-            setSelectedBrand(null);
-        } else {
-            setSelectedBrand(marca);
-        }
+        setSelectedBrand(prevBrands => {
+            if (prevBrands.includes(marca)) {
+                return prevBrands.filter(item => item !== marca);
+            } else {
+                return [...prevBrands, marca];
+            }
+        });
     };
 
     return (

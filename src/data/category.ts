@@ -17,11 +17,11 @@ const category: Category[] = [
             {
                 "name": "Telefonia",
                 "types": ["Smartphone", "Smartwatches", "Smartbands"],
-                "brands": ["Samsung", "Apple", "Xiaomi"]
+                "brands": []
             },
             {
                 "name": "Consolas",
-                "types": [],
+                "types": ["Accesorios de Consolas", "Nintendo", "PlayStation", "Xbox", "Otras Consolas"],
                 "brands": []
             },
             {
@@ -51,8 +51,8 @@ const category: Category[] = [
         "subcategories": [
             {
                 "name": "Bicicletas",
-                "types": [],
-                "brands": []
+                "types": ["Bicicletas Urbanas", "Bicicletas Montañeras", "Scooter Electricos", "Bicicletas Estaticas", "Bicicletas Electricas", "Bicicletas de Ruta o Pista", "Monociclos Electricos"],
+                "brands": ["Zafiro", "Evezo", "Radost"]
             },
             {
                 "name": "Electromovilidad",

@@ -1,14 +1,24 @@
 export type Products = Product[];
 
 export interface Product {
-  brand: string;
   title: string;
   description: string;
   discount: string;
   image: string;
-  price: string;
+  price: number;
+  brand: string;
+
+  category: string
+  subcategories: Subcategory;
+
   link: string;
   stores: Store[];
+}
+
+export interface Subcategory {
+  name: string;
+  type: string;
+  brand: string;
 }
 
 export interface Store {

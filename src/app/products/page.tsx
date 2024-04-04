@@ -1,6 +1,6 @@
 import { ProductsGeneral } from "@/components/products/ProductsGeneral"
 
-export default function Products() {
+export default function ProductsPage() {
   return (
     <div className="my-7">
       <ProductsGeneral />
