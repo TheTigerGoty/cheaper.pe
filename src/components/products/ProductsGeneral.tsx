@@ -7,12 +7,14 @@ import ProductsCard from './content/ProductsCard';
 
 interface Props {
     currentPage: number;
-    currentCategory: string | null; // Agrega la prop currentCategory
+    currentCategory: string | null;
+    currentSubcategory: string[]; // Agrega la prop currentSubcategory
     handlePageChange: (pageNumber: number) => void;
-    handleCategoryChange: (category: string) => void; // Agrega la prop handleCategoryChange
+    handleCategoryChange: (category: string) => void;
+    handleSubCategoryChange: (subcategory: string[]) => void; // Agrega la prop handleSubCategoryChange
 }
 
-export const ProductsGeneral: React.FC<Props> = ({ currentPage, currentCategory, handlePageChange, handleCategoryChange }) => {
+export const ProductsGeneral: React.FC<Props> = ({ currentPage, currentCategory, currentSubcategory, handlePageChange, handleCategoryChange, handleSubCategoryChange }) => {
 
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     const [selectedSubCategory, setSelectedSubCategory] = useState<string[]>([]);
@@ -20,29 +22,25 @@ export const ProductsGeneral: React.FC<Props> = ({ currentPage, currentCategory,
     const [selectedType, setSelectedType] = useState<string[]>([])
     const [selectedBrand, setSelectedBrand] = useState<string[]>([])
 
-    const handleCategorySelect = (categoria: string) => {
-        setSelectedCategory(categoria);
+    useEffect(() => {
+        setSelectedCategory(currentCategory);
+        setSelectedSubCategory(currentSubcategory);
+    }, [currentCategory, currentSubcategory]);
+
+    const handleCategorySelect = (category: string) => {
+        setSelectedCategory(category);
         setSelectedSubCategory([]);
         setSelectedType([]);
         setSelectedBrand([]);
-        handleCategoryChange(categoria); // Llama a handleCategoryChange cuando se selecciona una categoría
+        handleCategoryChange(category);
     };
 
-    useEffect(() => {
-        // Marcar la categoría seleccionada en la interfaz de usuario
-        if (currentCategory) {
-          setSelectedCategory(currentCategory);
-        }
-      }, [currentCategory]);
-
     const handleSubCategorySelect = (subCategoria: string) => {
-        setSelectedSubCategory(prevSubCategories => {
-            if (prevSubCategories.includes(subCategoria)) {
-                return prevSubCategories.filter(item => item !== subCategoria);
-            } else {
-                return [...prevSubCategories, subCategoria];
-            }
-        });
+        const updatedSubCategory = selectedSubCategory.includes(subCategoria)
+            ? selectedSubCategory.filter(item => item !== subCategoria)
+            : [...selectedSubCategory, subCategoria];
+        setSelectedSubCategory(updatedSubCategory);
+        handleSubCategoryChange(updatedSubCategory);
     };
 
     const handleSliderSelect = (event: any) => {
