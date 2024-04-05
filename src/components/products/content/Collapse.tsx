@@ -73,13 +73,24 @@ export const Collapse: React.FC<CollapseProps> = ({ onCategorySelect, onSubCateg
   }, [selectedCategory]);
 
   useEffect(() => {
-    // Recuperar la categoría de la URL al cargar la página
     const params = new URLSearchParams(window.location.search);
     const categoryFromUrl = params.get('category');
     if (categoryFromUrl) {
       setSelectedCategory(categoryFromUrl);
     }
   }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const subcategoryFromUrl = params.getAll('subcategory'); 
+    const selectedSubcategoriesFromUrl = subcategoryFromUrl.flatMap(subcategory => subcategory.split('+')); 
+
+    if (selectedSubcategoriesFromUrl.length > 0) {
+        const updatedSelectedSubCategoriesByCategory = { ...selectedSubCategoriesByCategory };
+        updatedSelectedSubCategoriesByCategory[selectedCategory || ''] = selectedSubcategoriesFromUrl;
+        setSelectedSubCategoriesByCategory(updatedSelectedSubCategoriesByCategory);
+    }
+}, [selectedCategory]); 
 
   const toggleCollapse = (section: Section) => {
     setIsCollapsed(prevState => ({

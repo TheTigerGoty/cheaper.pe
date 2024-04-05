@@ -8,10 +8,10 @@ import ProductsCard from './content/ProductsCard';
 interface Props {
     currentPage: number;
     currentCategory: string | null;
-    currentSubcategory: string[]; // Agrega la prop currentSubcategory
+    currentSubcategory: string[];
     handlePageChange: (pageNumber: number) => void;
     handleCategoryChange: (category: string) => void;
-    handleSubCategoryChange: (subcategory: string[]) => void; // Agrega la prop handleSubCategoryChange
+    handleSubCategoryChange: (subcategory: string[]) => void; 
 }
 
 export const ProductsGeneral: React.FC<Props> = ({ currentPage, currentCategory, currentSubcategory, handlePageChange, handleCategoryChange, handleSubCategoryChange }) => {

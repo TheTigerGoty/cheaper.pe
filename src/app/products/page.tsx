@@ -6,15 +6,14 @@ interface Props {
   searchParams: {
     page?: string
     category?: string;
-    subcategory?: string;
+    subcategory?: string | string[]; 
   }
 }
 
 export default function ProductsPage({ searchParams }: Props) {
   const [currentPage, setCurrentPage] = useState<number>(searchParams.page ? parseInt(searchParams.page) : 1);
   const [currentCategory, setCurrentCategory] = useState<string | null>(searchParams.category || null);
-  const [currentSubcategory, setCurrentSubcategory] = useState<string[]>(searchParams.subcategory ? searchParams.subcategory.split('+') : []);
-
+  const [currentSubcategory, setCurrentSubcategory] = useState<string[]>(searchParams.subcategory ? (typeof searchParams.subcategory === 'string' ? searchParams.subcategory.split('+') : searchParams.subcategory) : []);
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
@@ -23,8 +22,8 @@ export default function ProductsPage({ searchParams }: Props) {
 
   const handleCategoryChange = (category: string) => {
     setCurrentCategory(category);
-    setCurrentPage(1); // Always reset to first page when category changes
-    setCurrentSubcategory([]); // Limpiamos las subcategorías seleccionadas al cambiar la categoría principal
+    setCurrentPage(1); 
+    setCurrentSubcategory([]); 
     updateURL(category, 1, []);
   };
 
@@ -41,7 +40,7 @@ export default function ProductsPage({ searchParams }: Props) {
     }
 
     if (subcategories.length > 0) {
-      const encodedSubcategories = subcategories.map(subcategory => encodeURIComponent(subcategory)).join('+');
+      const encodedSubcategories = encodeURIComponent(subcategories.join('+'));
       url += `&subcategory=${encodedSubcategories}`;
     }
 
@@ -49,17 +48,16 @@ export default function ProductsPage({ searchParams }: Props) {
   };
 
   useEffect(() => {
-    // Update the URL when category changes
     updateURL(currentCategory, currentPage, currentSubcategory);
   }, [currentCategory, currentPage, currentSubcategory]);
 
   useEffect(() => {
-    // Recuperar la categoría de la URL al cargar la página
     if (searchParams.category) {
       setCurrentCategory(searchParams.category);
     }
     if (searchParams.subcategory) {
-      setCurrentSubcategory(searchParams.subcategory.split('+'));
+      const subcategories = typeof searchParams.subcategory === 'string' ? searchParams.subcategory.split('+').map(subcategory => decodeURIComponent(subcategory)) : searchParams.subcategory;
+      setCurrentSubcategory(subcategories);
     }
   }, [searchParams.category, searchParams.subcategory]);
 
@@ -72,7 +70,6 @@ export default function ProductsPage({ searchParams }: Props) {
         handlePageChange={handlePageChange}
         handleCategoryChange={handleCategoryChange}
         handleSubCategoryChange={handleSubCategoryChange} />
-
     </div>
   )
 }
