@@ -72,6 +72,15 @@ export const Collapse: React.FC<CollapseProps> = ({ onCategorySelect, onSubCateg
     setSelectedSubCategoriesByCategory({});
   }, [selectedCategory]);
 
+  useEffect(() => {
+    // Recuperar la categoría de la URL al cargar la página
+    const params = new URLSearchParams(window.location.search);
+    const categoryFromUrl = params.get('category');
+    if (categoryFromUrl) {
+      setSelectedCategory(categoryFromUrl);
+    }
+  }, []);
+
   const toggleCollapse = (section: Section) => {
     setIsCollapsed(prevState => ({
       ...prevState,
@@ -79,7 +88,7 @@ export const Collapse: React.FC<CollapseProps> = ({ onCategorySelect, onSubCateg
     }));
   };
 
-  const handleCategorySelect = (categoria: string) => {    
+  const handleCategorySelect = (categoria: string) => {
     setSelectedCategory(categoria);
     setSelectedSubCategory(null);
     onCategorySelect(categoria);
@@ -121,10 +130,15 @@ export const Collapse: React.FC<CollapseProps> = ({ onCategorySelect, onSubCateg
 
         <RadioGroup>
           {categorias.map((categoria, index) => (
-            <div className=" flex items-center space-x-2"
+            <div
+              className=" flex items-center space-x-2"
               key={index}
             >
-              <RadioGroupItem value={categoria} id={categoria} onClick={() => handleCategorySelect(categoria)} />
+              <RadioGroupItem
+                value={categoria}
+                id={categoria}
+                className={categoria === selectedCategory ? 'bg-yellow-300' : ''}
+                onClick={() => handleCategorySelect(categoria)} />
               <Label htmlFor={categoria} className='text-base'>{categoria}</Label>
             </div>
           ))}

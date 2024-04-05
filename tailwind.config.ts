@@ -34,7 +34,8 @@ const config = {
       black: "#000",
       grey: "#8A8E9A",
       orange: "#FF3617",
-      navbardark: '#222222'
+      navbardark: '#222222',
+      yellow: '#FACC15'
     },
     extend: {
       colors: {

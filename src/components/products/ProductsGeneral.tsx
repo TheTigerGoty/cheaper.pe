@@ -1,17 +1,18 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Collapse } from './content/Collapse';
 import { FilterButton } from './content/FilterButton';
 import ProductsCard from './content/ProductsCard';
 
 interface Props {
     currentPage: number;
+    currentCategory: string | null; // Agrega la prop currentCategory
     handlePageChange: (pageNumber: number) => void;
     handleCategoryChange: (category: string) => void; // Agrega la prop handleCategoryChange
 }
 
-export const ProductsGeneral: React.FC<Props> = ({ currentPage, handlePageChange, handleCategoryChange }) => {
+export const ProductsGeneral: React.FC<Props> = ({ currentPage, currentCategory, handlePageChange, handleCategoryChange }) => {
 
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     const [selectedSubCategory, setSelectedSubCategory] = useState<string[]>([]);
@@ -25,9 +26,14 @@ export const ProductsGeneral: React.FC<Props> = ({ currentPage, handlePageChange
         setSelectedType([]);
         setSelectedBrand([]);
         handleCategoryChange(categoria); // Llama a handleCategoryChange cuando se selecciona una categoría
-
-        
     };
+
+    useEffect(() => {
+        // Marcar la categoría seleccionada en la interfaz de usuario
+        if (currentCategory) {
+          setSelectedCategory(currentCategory);
+        }
+      }, [currentCategory]);
 
     const handleSubCategorySelect = (subCategoria: string) => {
         setSelectedSubCategory(prevSubCategories => {

@@ -13,7 +13,6 @@ export default function ProductsPage({ searchParams }: Props) {
   const [currentPage, setCurrentPage] = useState<number>(searchParams.page ? parseInt(searchParams.page) : 1);
   const [currentCategory, setCurrentCategory] = useState<string | null>(searchParams.category || null);
 
-
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
     updateURL(currentCategory, pageNumber);
@@ -35,9 +34,16 @@ export default function ProductsPage({ searchParams }: Props) {
     updateURL(currentCategory, currentPage);
   }, [currentCategory]);
 
+  useEffect(() => {
+    // Recuperar la categoría de la URL al cargar la página
+    if (searchParams.category) {
+      setCurrentCategory(searchParams.category);
+    }
+  }, [searchParams.category]);
+
   return (
     <div className="my-7">
-      <ProductsGeneral currentPage={currentPage} handlePageChange={handlePageChange} handleCategoryChange={handleCategoryChange} />
+      <ProductsGeneral currentPage={currentPage} currentCategory={currentCategory} handlePageChange={handlePageChange} handleCategoryChange={handleCategoryChange} />
     </div>
   )
 }
