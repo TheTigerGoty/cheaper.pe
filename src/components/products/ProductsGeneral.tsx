@@ -38,10 +38,12 @@ export const ProductsGeneral: React.FC<Props> = ({
     const [selectedBrand, setSelectedBrand] = useState<string[]>([])
 
     useEffect(() => {
-        setSelectedCategory(currentCategory);
-        setSelectedSubCategory(currentSubcategory);
-        setSelectedType(currentType);
-        setSelectedBrand(currentBrand);
+        if (currentCategory !== selectedCategory) {
+            setSelectedCategory(currentCategory);
+            setSelectedSubCategory(currentSubcategory);
+            setSelectedType(currentType);
+            setSelectedBrand(currentBrand);
+        }
     }, [currentCategory, currentSubcategory, currentType, currentBrand]);
 
     const handleCategorySelect = (category: string) => {

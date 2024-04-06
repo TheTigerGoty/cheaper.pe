@@ -127,9 +127,11 @@ export const Collapse: React.FC<CollapseProps> = ({ onCategorySelect, onSubCateg
   };
 
   const handleCategorySelect = (categoria: string) => {
-    setSelectedCategory(categoria);
-    setSelectedSubCategory(null);
-    onCategorySelect(categoria);
+    if (categoria !== selectedCategory) {
+      setSelectedCategory(categoria);
+      setSelectedSubCategory(null);
+      onCategorySelect(categoria);
+    }
   };
 
   const handleSliderChange = (event: ChangeEvent<HTMLInputElement>) => {

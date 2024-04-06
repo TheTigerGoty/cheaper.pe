@@ -29,12 +29,14 @@ export default function ProductsPage({ searchParams }: Props) {
   };
 
   const handleCategoryChange = (category: string) => {
-    setCurrentCategory(category);
-    setCurrentPage(1); 
-    setCurrentSubcategory([]); 
-    setCurrentType([]);
-    setCurrentBrand([]);
-    updateURL(category, 1, [], [], []);
+    if (category !== currentCategory) {
+      setCurrentCategory(category);
+      setCurrentPage(1); 
+      setCurrentSubcategory([]); 
+      setCurrentType([]);
+      setCurrentBrand([]);
+      updateURL(category, 1, [], [], []);
+    }
   };
 
   const handleSubCategoryChange = (subcategories: string[]) => {
