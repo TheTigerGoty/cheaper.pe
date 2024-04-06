@@ -9,12 +9,27 @@ interface Props {
     currentPage: number;
     currentCategory: string | null;
     currentSubcategory: string[];
+    currentType: string[];
+    currentBrand: string[];
     handlePageChange: (pageNumber: number) => void;
     handleCategoryChange: (category: string) => void;
-    handleSubCategoryChange: (subcategory: string[]) => void; 
+    handleSubCategoryChange: (subcategory: string[]) => void;
+    handleTypeChange: (type: string[]) => void;
+    handleBrandChange: (brand: string[]) => void;
 }
 
-export const ProductsGeneral: React.FC<Props> = ({ currentPage, currentCategory, currentSubcategory, handlePageChange, handleCategoryChange, handleSubCategoryChange }) => {
+export const ProductsGeneral: React.FC<Props> = ({
+    currentPage,
+    currentCategory,
+    currentSubcategory,
+    currentType,
+    currentBrand,
+    handlePageChange,
+    handleCategoryChange,
+    handleSubCategoryChange,
+    handleTypeChange,
+    handleBrandChange
+}) => {
 
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     const [selectedSubCategory, setSelectedSubCategory] = useState<string[]>([]);
@@ -25,7 +40,9 @@ export const ProductsGeneral: React.FC<Props> = ({ currentPage, currentCategory,
     useEffect(() => {
         setSelectedCategory(currentCategory);
         setSelectedSubCategory(currentSubcategory);
-    }, [currentCategory, currentSubcategory]);
+        setSelectedType(currentType);
+        setSelectedBrand(currentBrand);
+    }, [currentCategory, currentSubcategory, currentType, currentBrand]);
 
     const handleCategorySelect = (category: string) => {
         setSelectedCategory(category);
@@ -48,23 +65,19 @@ export const ProductsGeneral: React.FC<Props> = ({ currentPage, currentCategory,
     }
 
     const handleTypeSelect = (tipo: string) => {
-        setSelectedType(prevTypes => {
-            if (prevTypes.includes(tipo)) {
-                return prevTypes.filter(item => item !== tipo);
-            } else {
-                return [...prevTypes, tipo];
-            }
-        });
+        const updatedType = selectedType.includes(tipo)
+            ? selectedType.filter(item => item !== tipo)
+            : [...selectedType, tipo];
+        setSelectedType(updatedType);
+        handleTypeChange(updatedType);
     };
 
     const handleBrandSelect = (marca: string) => {
-        setSelectedBrand(prevBrands => {
-            if (prevBrands.includes(marca)) {
-                return prevBrands.filter(item => item !== marca);
-            } else {
-                return [...prevBrands, marca];
-            }
-        });
+        const updatedBrand = selectedBrand.includes(marca)
+            ? selectedBrand.filter(item => item !== marca)
+            : [...selectedBrand, marca];
+        setSelectedBrand(updatedBrand);
+        handleBrandChange(updatedBrand);
     };
 
     return (

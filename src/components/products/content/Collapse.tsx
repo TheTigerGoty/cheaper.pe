@@ -67,6 +67,8 @@ export const Collapse: React.FC<CollapseProps> = ({ onCategorySelect, onSubCateg
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
   const [sliderValue, setSliderValue] = useState(0);
   const [selectedSubCategoriesByCategory, setSelectedSubCategoriesByCategory] = useState<{ [key: string]: string[] }>({});
+  const [selectedTypesByCategory, setSelectedTypesByCategory] = useState<{ [key: string]: string[] }>({});
+  const [selectedBrandsByCategory, setSelectedBrandsByCategory] = useState<{ [key: string]: string[] }>({});
 
   useEffect(() => {
     setSelectedSubCategoriesByCategory({});
@@ -82,15 +84,40 @@ export const Collapse: React.FC<CollapseProps> = ({ onCategorySelect, onSubCateg
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const subcategoryFromUrl = params.getAll('subcategory'); 
-    const selectedSubcategoriesFromUrl = subcategoryFromUrl.flatMap(subcategory => subcategory.split('+')); 
+    const subcategoryFromUrl = params.getAll('subcategory');
+    const selectedSubcategoriesFromUrl = subcategoryFromUrl.flatMap(subcategory => subcategory.split('+'));
 
     if (selectedSubcategoriesFromUrl.length > 0) {
-        const updatedSelectedSubCategoriesByCategory = { ...selectedSubCategoriesByCategory };
-        updatedSelectedSubCategoriesByCategory[selectedCategory || ''] = selectedSubcategoriesFromUrl;
-        setSelectedSubCategoriesByCategory(updatedSelectedSubCategoriesByCategory);
+      const updatedSelectedSubCategoriesByCategory = { ...selectedSubCategoriesByCategory };
+      updatedSelectedSubCategoriesByCategory[selectedCategory || ''] = selectedSubcategoriesFromUrl;
+      setSelectedSubCategoriesByCategory(updatedSelectedSubCategoriesByCategory);
     }
-}, [selectedCategory]); 
+  }, [selectedCategory]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const typeFromUrl = params.getAll('type');
+    const selectedTypesFromUrl = typeFromUrl.flatMap(type => type.split('+'));
+
+    if (selectedTypesFromUrl.length > 0) {
+      const updatedSelectedTypesByCategory = { ...selectedTypesByCategory };
+      updatedSelectedTypesByCategory[selectedCategory || ''] = selectedTypesFromUrl;
+      setSelectedTypesByCategory(updatedSelectedTypesByCategory);
+    }
+  }, [selectedCategory]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const brandFromUrl = params.getAll('brand');
+    const selectedBrandsFromUrl = brandFromUrl.flatMap(brand => brand.split('+'));
+
+    if (selectedBrandsFromUrl.length > 0) {
+      const updatedSelectedBrandsByCategory = { ...selectedBrandsByCategory };
+      updatedSelectedBrandsByCategory[selectedCategory || ''] = selectedBrandsFromUrl;
+      setSelectedBrandsByCategory(updatedSelectedBrandsByCategory);
+    }
+  }, [selectedCategory]);
+
 
   const toggleCollapse = (section: Section) => {
     setIsCollapsed(prevState => ({
@@ -122,14 +149,26 @@ export const Collapse: React.FC<CollapseProps> = ({ onCategorySelect, onSubCateg
   };
 
   const handleTypeSelect = (tipo: string) => {
-    setSelectedType(tipo);
+    const updatedSelectedTypesByCategory = { ...selectedTypesByCategory };
+    const selectedTypesForCategory = selectedTypesByCategory[selectedCategory || ''] || [];
+    updatedSelectedTypesByCategory[selectedCategory || ''] = selectedTypesForCategory.includes(tipo)
+      ? selectedTypesForCategory.filter(item => item !== tipo)
+      : [...selectedTypesForCategory, tipo];
+    setSelectedTypesByCategory(updatedSelectedTypesByCategory);
+    setSelectedType(tipo); // Actualizar el estado selectedType
     onTypeSelect(tipo);
   };
 
 
-  const handleBrandSelect = (marca: string) => {
-    setSelectedBrand(marca);
-    onBrandSelect(marca);
+  const handleBrandSelect = (brand: string) => {
+    const updatedSelectedBrandsByCategory = { ...selectedBrandsByCategory };
+    const selectedBrandsForCategory = selectedBrandsByCategory[selectedCategory || ''] || [];
+    updatedSelectedBrandsByCategory[selectedCategory || ''] = selectedBrandsForCategory.includes(brand)
+      ? selectedBrandsForCategory.filter(item => item !== brand)
+      : [...selectedBrandsForCategory, brand];
+    setSelectedBrandsByCategory(updatedSelectedBrandsByCategory);
+    setSelectedBrand(brand); // Actualizar el estado selectedBrand
+    onBrandSelect(brand);
   };
 
   return (
@@ -205,8 +244,12 @@ export const Collapse: React.FC<CollapseProps> = ({ onCategorySelect, onSubCateg
             <CollapsibleContent className=" pt-sans-regular space-y-5 mt-5 ml-5 mr-1">
               {selectedSubCategoriesByCategory[selectedCategory || ''].flatMap(subCategoria => tipos[subCategoria] || []).map((tipo, index) => (
                 <div key={index} className="flex justify-between items-center text-lg">
-                  <label htmlFor={tipo} >{tipo}</label>
-                  <Checkbox id={tipo} onClick={() => handleTypeSelect(tipo)} />
+                  <label htmlFor={tipo}>{tipo}</label>
+                  <Checkbox
+                    id={tipo}
+                    checked={selectedTypesByCategory[selectedCategory || '']?.includes(tipo) || false}
+                    onCheckedChange={() => handleTypeSelect(tipo)}
+                  />
                 </div>
               ))}
             </CollapsibleContent>
@@ -227,7 +270,10 @@ export const Collapse: React.FC<CollapseProps> = ({ onCategorySelect, onSubCateg
               {selectedSubCategoriesByCategory[selectedCategory || ''].flatMap(subCategoria => marcasEspecificas[subCategoria] || []).map((marca, index) => (
                 <div key={index} className="flex justify-between items-center text-lg">
                   <label htmlFor={marca}>{marca}</label>
-                  <Checkbox id={marca} onClick={() => handleBrandSelect(marca)} />
+                  <Checkbox
+                    id={marca}
+                    checked={selectedBrandsByCategory[selectedCategory || '']?.includes(marca) || false}
+                    onClick={() => handleBrandSelect(marca)} />
                 </div>
               ))}
             </CollapsibleContent>
